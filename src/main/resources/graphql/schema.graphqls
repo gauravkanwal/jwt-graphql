@@ -1,0 +1,16 @@
+type User{
+    id:ID!
+    name:String!
+    username:String!
+    role:String!
+}
+
+type Query{
+    myProfile:User!
+    allUsers:[User!]!
+}
+
+type Mutation{
+    register(name:String!,username:String!, password:String!):User!
+    login(username:String!,password:String!):String!
+}
