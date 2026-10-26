@@ -15,6 +15,8 @@ import java.util.Date;
 public class JWTService {
     private final SecretKey signingKey;
 
+    @Value("${jwt.expiration}")
+    private long jwtExpiration;
     public JWTService(@Value("${jwt.secret}") String secret){
         this.signingKey= Keys.hmacShaKeyFor(
                 Decoders.BASE64.decode(secret)
@@ -22,11 +24,10 @@ public class JWTService {
     }
 
     public String generateToken(UserDetails userDetails){
-        long expirationTime=15*60*1000L; //15 mins
         return Jwts.builder()
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis()+expirationTime))
+                .expiration(new Date(System.currentTimeMillis()+jwtExpiration))
                 .signWith(signingKey)
                 .compact();
     }
